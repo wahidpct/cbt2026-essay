@@ -475,8 +475,8 @@
                 clearInterval(timerInterval);
                 timerInterval = null;
             }
-            waktuDetik = 3600;
-            timerDisplay.textContent = '60:00';
+            waktuDetik = 5400;
+            timerDisplay.textContent = '90:00';
             isTimerRunning = false;
             startTimer();
         }
@@ -607,7 +607,7 @@
                 alert('Ujian sudah dikumpulkan. Refresh halaman untuk memulai ulang.');
                 return;
             }
-            if (confirm('Acak ulang soal akan mereset timer ke 60 menit dan menghapus jawaban. Lanjutkan?')) {
+            if (confirm('Acak ulang soal akan mereset timer ke 90 menit dan menghapus jawaban. Lanjutkan?')) {
                 resetTimer();
                 loadAcakDanRender();
                 centangSelesai.checked = false;
