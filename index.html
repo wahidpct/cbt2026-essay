@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Online - Essay (Koreksi Manual)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f4f7fc;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 30px 20px;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            padding: 30px 35px;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px rgba(0, 20, 40, 0.12);
+            transition: 0.25s;
+        }
+        h1 {
+            font-size: 26px;
+            font-weight: 600;
+            color: #0b2b4a;
+            border-left: 6px solid #2a7de1;
+            padding-left: 18px;
+            margin-bottom: 28px;
+            letter-spacing: -0.3px;
+        }
+        .identitas {
+            background: #f0f5fe;
+            padding: 18px 22px;
+            border-radius: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px 35px;
+            margin-bottom: 30px;
+            align-items: center;
+            border: 1px solid #d9e6f5;
+        }
+        .identitas label {
+            font-weight: 500;
+            color: #1a3b5e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .identitas input, .identitas select {
+            padding: 10px 14px;
+            border: 1px solid #cbdae9;
+            border-radius: 40px;
+            font-size: 15px;
+            background: white;
+            min-width: 180px;
+            transition: 0.2s;
+        }
+        .identitas input:focus, .identitas select:focus {
+            border-color: #2a7de1;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(42, 125, 225, 0.15);
+        }
+        .timer-area {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+        .timer-box {
+            background: #1f2e46;
+            color: white;
+            padding: 10px 22px;
+            border-radius: 80px;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .timer-box span {
+            background: #f6c343;
+            color: #1f2e46;
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-size: 20px;
+        }
+        .btn-acak {
+            background: #eef3fa;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-weight: 500;
+            color: #1d3f62;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.15s;
+            border: 1px solid #c4d4e8;
+        }
+        .btn-acak:hover {
+            background: #dce6f2;
+            transform: scale(0.97);
+        }
+        .soal-item {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 22px 25px 25px 25px;
+            margin-bottom: 25px;
+            border: 1px solid #e4ebf5;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+            transition: 0.2s;
+        }
+        .soal-item:hover {
+            border-color: #b6cee9;
+        }
+        .soal-header {
+            display: flex;
+            gap: 12px;
+            font-weight: 600;
+            color: #113355;
+            margin-bottom: 16px;
+            font-size: 17px;
+        }
+        .soal-header .nomor {
+            background: #dde8fa;
+            padding: 3px 14px;
+            border-radius: 40px;
+            font-size: 15px;
+            color: #0a2844;
+        }
+        .soal-header .tipe {
+            background: #e2ecfe;
+            padding: 3px 14px;
+            border-radius: 40px;
+            font-size: 14px;
+        }
+        .soal-text {
+            font-size: 18px;
+            font-weight: 500;
+            color: #0a1e32;
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+        .jawaban-essay {
+            margin-top: 12px;
+        }
+        .jawaban-essay textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 14px 18px;
+            border: 1px solid #ccdcee;
+            border-radius: 18px;
+            font-size: 15px;
+            font-family: inherit;
+            background: #fafdff;
+            transition: 0.2s;
+            resize: vertical;
+            line-height: 1.6;
+        }
+        .jawaban-essay textarea:focus {
+            border-color: #2a7de1;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(42, 125, 225, 0.12);
+        }
+        .tombol-submit {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            border-top: 1px solid #d9e3ef;
+            padding-top: 30px;
+        }
+        .konfirmasi-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            color: #1b3c5e;
+        }
+        .konfirmasi-area input {
+            width: 20px;
+            height: 20px;
+            accent-color: #1f6ed4;
+        }
+        .btn-submit {
+            background: #1f6ed4;
+            color: white;
+            border: none;
+            padding: 14px 44px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: 0.15s;
+            box-shadow: 0 6px 12px rgba(26, 80, 170, 0.25);
+        }
+        .btn-submit:hover:not(:disabled) {
+            background: #1359b8;
+            transform: scale(0.97);
+        }
+        .btn-submit:disabled {
+            background: #a7bddb;
+            cursor: not-allowed;
+            box-shadow: none;
+            opacity: 0.6;
+        }
+        .alert-box {
+            margin-top: 20px;
+            background: #e6f0fa;
+            padding: 14px 22px;
+            border-radius: 40px;
+            color: #143c66;
+            border-left: 5px solid #2a7de1;
+            font-weight: 500;
+        }
+        .hasil-koreksi {
+            margin-top: 30px;
+            background: #f9fcff;
+            border: 1px solid #d0e0f0;
+            border-radius: 24px;
+            padding: 24px 28px;
+            display: none;
+        }
+        .hasil-koreksi h2 {
+            font-size: 22px;
+            color: #0b2b4a;
+            margin-bottom: 18px;
+            border-left: 5px solid #2a7de1;
+            padding-left: 14px;
+        }
+        .jawaban-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .jawaban-entry {
+            background: white;
+            border-radius: 16px;
+            padding: 16px 20px;
+            border: 1px solid #e0eaf5;
+        }
+        .jawaban-entry .nomor-soal {
+            font-weight: 700;
+            color: #1f6ed4;
+            margin-bottom: 6px;
+        }
+        .jawaban-entry .pertanyaan {
+            font-weight: 500;
+            color: #1a3552;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+        .jawaban-entry .jawaban-user {
+            background: #f4f9ff;
+            padding: 10px 16px;
+            border-radius: 12px;
+            color: #0d2e4e;
+            font-size: 15px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            border-left: 3px solid #2a7de1;
+        }
+        .btn-ekspor {
+            background: #eef3fa;
+            border: 1px solid #c4d4e8;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 500;
+            color: #1d3f62;
+            cursor: pointer;
+            transition: 0.15s;
+            margin-top: 20px;
+            font-size: 15px;
+        }
+        .btn-ekspor:hover {
+            background: #dce6f2;
+        }
+        footer {
+            margin-top: 25px;
+            text-align: center;
+            color: #7a8fa8;
+            font-size: 14px;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 20px 16px; }
+            .identitas { flex-direction: column; align-items: stretch; }
+            .timer-area { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+    <h1>📝 Ujian Online - Essay</h1>
+
+    <!-- Identitas Siswa -->
+    <div class="identitas">
+        <label>Nama Siswa <input type="text" id="namaSiswa" placeholder="Nama lengkap" /></label>
+        <label>Kelas 
+            <select id="kelasSiswa">
+                <option value="X APHPI">X APHPI</option>
+                <option value="X KULINER 1">X KULINER 1</option>
+                <option value="X KULINER 2">X KULINER 2</option>
+                <option value="X TAV 1">X TAV 1</option>
+                <option value="X TAV 2">X TAV 2</option>
+                <option value="X TKR 2">X TKR 2</option>
+            </select>
+        </label>
+    </div>
+
+    <!-- Timer + acak manual -->
+    <div class="timer-area">
+        <div class="timer-box">⏳ <span id="timerDisplay">60:00</span></div>
+        <button class="btn-acak" id="acakUlangBtn">🔄 Acak ulang soal</button>
+    </div>
+
+    <!-- Tempat daftar soal -->
+    <div id="soalContainer"></div>
+
+    <!-- Submit & konfirmasi -->
+    <div class="tombol-submit">
+        <div class="konfirmasi-area">
+            <input type="checkbox" id="centangSelesai" />
+            <label for="centangSelesai">Saya sudah selesai mengerjakan</label>
+        </div>
+        <button class="btn-submit" id="submitBtn" disabled>✔️ Kumpulkan Jawaban</button>
+    </div>
+    <div id="infoAlert" class="alert-box" style="display: none;"></div>
+
+    <!-- Hasil koreksi manual -->
+    <div id="hasilKoreksi" class="hasil-koreksi">
+        <h2>📋 Jawaban Siswa (Koreksi Manual)</h2>
+        <div id="jawabanList" class="jawaban-list"></div>
+        <button class="btn-ekspor" id="eksporBtn">📥 Salin / Unduh Jawaban</button>
+    </div>
+
+    <footer>© 2026 · Soal essay · </footer>
+</div>
+
+<script>
+    (function() {
+        // ---------- DATA SOAL ESSAY ----------
+        const bankSoal = [
+            {
+                pertanyaan: 'Raka adalah siswa kelas XII SMK jurusan Teknik Komputer dan Jaringan. Setelah lulus, ia ingin segera bekerja, tetapi tidak ingin hanya menunggu informasi lowongan dari sekolah atau teman. Ia kemudian menggunakan search engine untuk mencari informasi dengan kata kunci “lowongan teknisi komputer untuk lulusan SMK di Jawa Timur”. Dari hasil pencarian, Raka menemukan berbagai informasi. Ada situs perusahaan yang mencantumkan posisi teknisi komputer beserta persyaratan, situs pencari kerja, postingan media sosial yang menawarkan pekerjaan dengan gaji sangat tinggi tetapi meminta calon pekerja membayar sejumlah uang sebelum mengikuti tes, serta beberapa blog yang sudah tidak diperbarui selama beberapa tahun. Raka kemudian membandingkan informasi tersebut. Ia memeriksa nama perusahaan, alamat, persyaratan pekerjaan, tanggal publikasi, alamat website, dan kontak resmi perusahaan. Ia juga mencari nama perusahaan tersebut dengan kata kunci tambahan seperti “profil perusahaan”, “ulasan perusahaan”, dan “lowongan resmi”. Setelah melakukan pemeriksaan, Raka memilih melamar melalui website resmi perusahaan. Ia juga membuat CV digital yang mencantumkan kemampuan instalasi sistem operasi, jaringan komputer, troubleshooting, serta pengalaman membuat jaringan sederhana di sekolah. Pertanyaan: 1.	Mengapa Raka tidak sebaiknya langsung mempercayai semua informasi yang ditemukan melalui search engine? 2. Langkah apa saja yang dilakukan Raka untuk memastikan informasi lowongan tersebut dapat dipercaya? 3. Bagaimana search engine dapat membantu siswa SMK mempersiapkan diri memasuki dunia kerja? 4. Menurut pendapatmu, apa tanda-tanda lowongan kerja online yang patut dicurigai? 5. Jika kamu berada pada posisi Raka, keterampilan apa yang akan kamu tampilkan dalam CV agar lebih menarik bagi perusahaan?'
+            },
+			{
+                pertanyaan: 'Sinta merupakan siswi SMK jurusan Tata Busana. Ia memiliki kemampuan membuat pakaian sederhana dan ingin mendapatkan penghasilan tambahan tanpa harus menunggu lulus sekolah. Sinta memiliki ide untuk membuka usaha jasa pembuatan dan modifikasi pakaian secara online. Sebelum memulai usahanya, Sinta menggunakan search engine untuk mencari informasi tentang “tren fashion remaja 2026”, “harga jasa permak pakaian”, “cara menentukan harga jual pakaian”, “cara membuat katalog produk”, dan “cara promosi usaha fashion melalui media sosial”. Sinta menemukan berbagai informasi. Beberapa website memberikan data harga yang cukup lengkap, sementara informasi lainnya hanya berdasarkan pengalaman pribadi. Ia juga menemukan video tutorial dan artikel mengenai strategi pemasaran digital. Sinta kemudian melakukan riset sederhana. Ia membandingkan harga dari beberapa usaha, menghitung biaya kain, benang, listrik, tenaga, kemasan, transportasi, dan keuntungan. Setelah itu, ia membuat beberapa contoh produk dan memotretnya untuk dijadikan portofolio.Ia menyadari bahwa search engine bukan hanya digunakan untuk mencari jawaban tugas sekolah, tetapi juga dapat digunakan untuk melakukan riset pasar sebelum menjalankan usaha. Pertanyaan:1. Bagaimana search engine membantu Sinta sebelum memulai usahanya? 2. Mengapa Sinta perlu membandingkan informasi dari beberapa sumber? 3. Mengapa menghitung biaya produksi penting sebelum menentukan harga jual?  4. Bagaimana seorang pelajar SMK dapat memanfaatkan search engine untuk menemukan peluang usaha? 5.	Menurutmu, sikap entrepreneurship apa yang ditunjukkan oleh Sinta?'
+            },
+            {
+                pertanyaan: 'Jelaskan perbedaan antara Hardware, Software, dan Brainware dalam sistem komputer, berikan masing-masing 2 contoh!'
+            },
+            {
+                pertanyaan: 'Apa yang dimaksud dengan Search Engine? Jelaskan cara kerjanya secara umum dan sebutkan 3 contoh search engine!'
+            },
+            {
+                pertanyaan: 'Sekelompok siswa SMK bernama Fajar, Rina, Bagas, dan Sari mendapatkan tugas membuat proyek kewirausahaan. Mereka sepakat membuat produk makanan ringan yang ditujukan untuk pelajar. Sebelum menentukan produknya, mereka menggunakan search engine untuk melakukan riset. Mereka mencari kata kunci seperti “makanan ringan yang sedang populer”, “tren makanan pelajar”, “harga snack di sekitar sekolah”, “cara menghitung modal usaha”, “kemasan makanan menarik”, dan “strategi pemasaran digital untuk UMKM”. Mereka menemukan banyak ide. Namun, mereka menyadari bahwa produk yang populer di kota besar belum tentu cocok dijual di lingkungan sekolah mereka. Oleh karena itu, mereka melakukan survei sederhana kepada teman-teman di sekolah. Berdasarkan hasil survei, mereka memilih produk yang sesuai dengan kemampuan modal, selera calon pembeli, harga yang terjangkau, dan kemampuan produksi mereka. Mereka kemudian menggunakan search engine untuk mencari informasi mengenai desain kemasan, cara menghitung keuntungan, strategi promosi, serta cara membuat foto produk yang menarik. Setelah usaha berjalan, mereka mengevaluasi hasil penjualan. Ternyata produk yang mereka anggap paling menarik justru kurang diminati. Mereka tidak menyerah. Mereka mencari penyebabnya, membaca masukan konsumen, memperbaiki rasa dan kemasan, kemudian mencoba strategi pemasaran baru. Pertanyaan: 1. Jelaskan bagaimana kelompok tersebut menggunakan search engine dari tahap perencanaan sampai evaluasi usaha. 2. Mengapa hasil pencarian di internet tetap harus disesuaikan dengan kondisi nyata di lingkungan sekitar?  3. Apa yang dilakukan kelompok tersebut ketika produk mereka kurang diminati?  4. Sikap apa saja yang menunjukkan jiwa entrepreneurship dalam cerita tersebut? 5. Menurutmu, mengapa kemampuan menggunakan search engine dapat membantu siswa SMK menjadi generasi yang siap kerja dan mandiri?'
+            },
+            
+		];
+
+        // ---------- STATE ----------
+        let daftarSoal = [];
+        let timerInterval = null;
+        let waktuDetik = 3600; // 60 menit
+        let isTimerRunning = false;
+        let isSubmitted = false;
+
+        // Elemen DOM
+        const container = document.getElementById('soalContainer');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const submitBtn = document.getElementById('submitBtn');
+        const centangSelesai = document.getElementById('centangSelesai');
+        const infoAlert = document.getElementById('infoAlert');
+        const acakUlangBtn = document.getElementById('acakUlangBtn');
+        const namaInput = document.getElementById('namaSiswa');
+        const kelasSelect = document.getElementById('kelasSiswa');
+        const hasilKoreksi = document.getElementById('hasilKoreksi');
+        const jawabanList = document.getElementById('jawabanList');
+        const eksporBtn = document.getElementById('eksporBtn');
+
+        // ---------- FUNGSI ACAK ----------
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function generateRandomSoal() {
+            return shuffleArray([...bankSoal]);
+        }
+
+        // ---------- RENDER SOAL ----------
+        function renderSoal(soalArray) {
+            if (!soalArray || soalArray.length === 0) {
+                container.innerHTML = '<p style="padding:20px;">Tidak ada soal.</p>';
+                return;
+            }
+
+            let html = '';
+            soalArray.forEach((soal, index) => {
+                const nomor = index + 1;
+                html += `<div class="soal-item" data-index="${index}">`;
+                html += `<div class="soal-header"><span class="nomor">Soal ${nomor}</span><span class="tipe">Essay</span></div>`;
+                html += `<div class="soal-text">${soal.pertanyaan}</div>`;
+                html += `<div class="jawaban-essay">
+                            <textarea placeholder="Tulis jawaban essay Anda di sini ..." data-soalindex="${index}" class="input-essay"></textarea>
+                         </div>`;
+                html += `</div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // ---------- LOAD ACAK + RENDER ----------
+        function loadAcakDanRender() {
+            if (isSubmitted) {
+                alert('Ujian sudah dikumpulkan. Refresh halaman untuk memulai ulang.');
+                return;
+            }
+            daftarSoal = generateRandomSoal();
+            renderSoal(daftarSoal);
+            centangSelesai.checked = false;
+            submitBtn.disabled = true;
+            infoAlert.style.display = 'none';
+            infoAlert.textContent = '';
+            hasilKoreksi.style.display = 'none';
+            if (!isTimerRunning) {
+                startTimer();
+            }
+        }
+
+        // ---------- TIMER ----------
+        function startTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            isTimerRunning = true;
+            timerInterval = setInterval(() => {
+                if (waktuDetik <= 0) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    isTimerRunning = false;
+                    timerDisplay.textContent = '00:00';
+                    alert('⏰ Waktu habis! Silakan kumpulkan jawaban Anda.');
+                    return;
+                }
+                waktuDetik--;
+                const menit = Math.floor(waktuDetik / 60);
+                const detik = waktuDetik % 60;
+                timerDisplay.textContent = `${String(menit).padStart(2, '0')}:${String(detik).padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function resetTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            waktuDetik = 3600;
+            timerDisplay.textContent = '60:00';
+            isTimerRunning = false;
+            startTimer();
+        }
+
+        // ---------- SUBMIT (KOREKSI MANUAL) ----------
+        function handleSubmit() {
+            if (isSubmitted) {
+                alert('Sudah dikumpulkan.');
+                return;
+            }
+
+            const nama = namaInput.value.trim();
+            if (nama === '') {
+                infoAlert.style.display = 'block';
+                infoAlert.textContent = '⚠️ Harap isi nama siswa.';
+                return;
+            }
+
+            if (!centangSelesai.checked) {
+                infoAlert.style.display = 'block';
+                infoAlert.textContent = '⚠️ Centang "Saya sudah selesai mengerjakan" terlebih dahulu.';
+                return;
+            }
+
+            // Kumpulkan jawaban essay
+            const jawabanUser = [];
+            const soalItems = document.querySelectorAll('.soal-item');
+            let semuaTerisi = true;
+
+            soalItems.forEach((item, idx) => {
+                const textarea = item.querySelector('.input-essay');
+                const val = textarea ? textarea.value.trim() : '';
+                if (val === '') semuaTerisi = false;
+                jawabanUser.push({
+                    nomor: idx + 1,
+                    pertanyaan: daftarSoal[idx].pertanyaan,
+                    jawaban: val || '(tidak diisi)'
+                });
+            });
+
+            // Tampilkan hasil koreksi manual
+            const kelas = kelasSelect.value;
+            let html = `<div style="margin-bottom:16px;padding:12px 18px;background:#e8f2ff;border-radius:14px;">
+                            <strong>Nama:</strong> ${nama} &nbsp;|&nbsp; <strong>Kelas:</strong> ${kelas} &nbsp;|&nbsp; 
+                            <strong>Jumlah Soal:</strong> ${daftarSoal.length}
+                        </div>`;
+
+            jawabanUser.forEach(item => {
+                html += `<div class="jawaban-entry">
+                            <div class="nomor-soal">Soal ${item.nomor}</div>
+                            <div class="pertanyaan">${item.pertanyaan}</div>
+                            <div class="jawaban-user">${item.jawaban.replace(/\n/g, '<br>')}</div>
+                         </div>`;
+            });
+
+            jawabanList.innerHTML = html;
+            hasilKoreksi.style.display = 'block';
+
+            // Nonaktifkan form
+            isSubmitted = true;
+            submitBtn.disabled = true;
+            centangSelesai.disabled = true;
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                isTimerRunning = false;
+            }
+            infoAlert.style.display = 'block';
+            infoAlert.textContent = semuaTerisi
+                ? '✅ Ujian selesai. Jawaban telah dikumpulkan. Silakan koreksi secara manual.'
+                : '⚠️ Ujian selesai, namun ada jawaban yang kosong. Silakan koreksi secara manual.';
+
+            document.querySelectorAll('input, select, button, textarea').forEach(el => {
+                if (el !== acakUlangBtn && el !== eksporBtn) el.disabled = true;
+            });
+            acakUlangBtn.disabled = true;
+            eksporBtn.disabled = false;
+        }
+
+        // ---------- EKSPOR JAWABAN ----------
+        function eksporJawaban() {
+            const nama = namaInput.value.trim();
+            const kelas = kelasSelect.value;
+            let teks = `HASIL UJIAN ESSAY\nNama: ${nama}\nKelas: ${kelas}\nTanggal: ${new Date().toLocaleString('id-ID')}\n`;
+            teks += '='.repeat(60) + '\n\n';
+
+            document.querySelectorAll('.jawaban-entry').forEach(entry => {
+                const nomor = entry.querySelector('.nomor-soal').textContent;
+                const pertanyaan = entry.querySelector('.pertanyaan').textContent;
+                const jawaban = entry.querySelector('.jawaban-user').innerText;
+                teks += `${nomor}\nPertanyaan: ${pertanyaan}\nJawaban: ${jawaban}\n\n${'-'.repeat(50)}\n\n`;
+            });
+
+            // Salin ke clipboard
+            navigator.clipboard.writeText(teks).then(() => {
+                alert('✅ Jawaban berhasil disalin ke clipboard!\n\nAnda juga dapat mengunduhnya sebagai file.');
+            }).catch(() => {
+                // Fallback: unduh sebagai file
+            });
+
+            // Unduh sebagai file
+            const blob = new Blob([teks], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Jawaban_${nama.replace(/\s+/g, '_')}_${kelas.replace(/\s+/g, '_')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // ---------- EVENT LISTENER ----------
+        centangSelesai.addEventListener('change', function() {
+            if (this.checked && !isSubmitted) {
+                submitBtn.disabled = false;
+                infoAlert.style.display = 'none';
+            } else {
+                submitBtn.disabled = true;
+            }
+        });
+
+        submitBtn.addEventListener('click', handleSubmit);
+        eksporBtn.addEventListener('click', eksporJawaban);
+
+        acakUlangBtn.addEventListener('click', function() {
+            if (isSubmitted) {
+                alert('Ujian sudah dikumpulkan. Refresh halaman untuk memulai ulang.');
+                return;
+            }
+            if (confirm('Acak ulang soal akan mereset timer ke 60 menit dan menghapus jawaban. Lanjutkan?')) {
+                resetTimer();
+                loadAcakDanRender();
+                centangSelesai.checked = false;
+                submitBtn.disabled = true;
+                infoAlert.style.display = 'none';
+                hasilKoreksi.style.display = 'none';
+                document.querySelectorAll('input, select, button, textarea').forEach(el => el.disabled = false);
+                centangSelesai.disabled = false;
+                isSubmitted = false;
+            }
+        });
+
+        // ---------- INISIALISASI ----------
+        window.addEventListener('load', function() {
+            isSubmitted = false;
+            centangSelesai.disabled = false;
+            submitBtn.disabled = true;
+            daftarSoal = generateRandomSoal();
+            renderSoal(daftarSoal);
+            resetTimer();
+            infoAlert.style.display = 'none';
+            hasilKoreksi.style.display = 'none';
+        });
+
+    })();
+</script>
+</body>
+</html>
